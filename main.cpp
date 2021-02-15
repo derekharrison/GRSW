@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
     N = 2000;       //Number of steps
     G = 0.2;        //Gravitational constant
     M = 1.0;        //Mass of gravitating object
-    L = 1.0;
+    L = 1.0;        //Angular momentum of orbiting object
 
     u0 = 0.5;       //Initial inverse radius test particle
     uh0 = 0.0;      //Initial derivative inverse radius wrt theta
