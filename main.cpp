@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
     double G, M, L, uh0, u0, theta0, dtheta;
 
     /* Parameters */
-    N = 2000;       //Number of steps
+    N = 8000;       //Number of steps
     G = 1.0;        //Gravitational constant
     M = 0.2;        //Mass of gravitating object
     L = 1.0;        //Angular momentum of orbiting object
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     u0 = 0.5;       //Initial inverse radius test particle
     uh0 = 0.0;      //Initial derivative inverse radius wrt theta
     theta0 = 0;     //Initial angle test particle
-    dtheta = 0.02;  //Step size
+    dtheta = 0.005; //Step size
 
     /* Start calculations */
     double theta = theta0;
@@ -43,8 +43,10 @@ int main(int argc, char* argv[]) {
     /* Evolve orbit */
     for(int i = 0; i < N; ++i) {
     	/* Advance step */
-        u = uh * dtheta + u;
-        uh = (3 * G*G * M*M / (L*L) * u*u - u + 1) * dtheta + uh;
+    	double u_o = u;
+    	double uh_o = uh;
+        u = uh_o * dtheta + u_o;
+        uh = (3 * G*G * M*M / (L*L) * u_o*u_o - u_o + 1) * dtheta + uh_o;
 
         /* Compute radial coordinate */
         r = L*L / (G * M * u);
