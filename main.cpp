@@ -11,13 +11,16 @@
 #include <math.h>
 #include <stdio.h>
 
+double f1(double t, double y, double G, double M, double L);
+double f2(double t, double y);
+
 int main(int argc, char* argv[]) {
 
     int N;
     double G, M, L, uh0, u0, theta0, dtheta;
 
     /* Parameters */
-    N = 8000;       //Number of steps
+    N = 5*8000;     //Number of steps
     G = 1.0;        //Gravitational constant
     M = 0.2;        //Mass of gravitating object
     L = 1.0;        //Angular momentum of orbiting object
@@ -45,8 +48,14 @@ int main(int argc, char* argv[]) {
     	/* Advance step */
     	double u_o = u;
     	double uh_o = uh;
-        u = uh_o * dtheta + u_o;
-        uh = (3 * G*G * M*M / (L*L) * u_o*u_o - u_o + 1) * dtheta + uh_o;
+    	double h = dtheta;
+
+    	/* Integration using the method of Heun */
+        double uh_hat = uh_o + h*f1(theta, u_o, G, M, L);
+        u = u_o + 0.5*h*(f2(theta, uh_o) + f2(theta, uh_hat));
+
+        double u_hat = u_o + h*f2(theta, uh_o);
+        uh = uh_o + 0.5*h*(f1(theta, u_o, G, M, L) + f1(theta, u_hat, G, M, L));
 
         /* Compute radial coordinate */
         r = L*L / (G * M * u);
@@ -64,10 +73,27 @@ int main(int argc, char* argv[]) {
         theta = theta + dtheta;
     }
 
+    printf("u: %f\n", u);
+    printf("uh: %f\n", uh);
+
     /* Close file */
     myfile.close();
 
     printf("done\n");
 
     return 0;
+}
+
+double f1(double t, double y, double G, double M, double L) {
+
+    double result = (3 * G*G * M*M / (L*L) * y*y - y + 1);
+
+    return result;
+}
+
+double f2(double t, double y) {
+
+    double result = y;
+
+    return result;
 }
