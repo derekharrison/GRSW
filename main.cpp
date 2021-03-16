@@ -73,9 +73,6 @@ int main(int argc, char* argv[]) {
         theta = theta + dtheta;
     }
 
-    printf("u: %f\n", u);
-    printf("uh: %f\n", uh);
-
     /* Close file */
     myfile.close();
 
