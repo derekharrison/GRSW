@@ -47,12 +47,12 @@ int main(int argc, char* argv[]) {
 
     /* Evolve orbit */
     for(int i = 0; i < N; ++i) {
-    	/* Advance step */
-    	double u_o = u;
-    	double uh_o = uh;
-    	double h = dtheta;
+        /* Advance step */
+        double u_o = u;
+        double uh_o = uh;
+        double h = dtheta;
 
-    	/* Integration using the method of Heun */
+        /* Integration using the method of Heun */
         double uh_hat = uh_o + h*f1(theta, u_o, G, M, L);
         u = u_o + 0.5*h*(f2(theta, uh_o) + f2(theta, uh_hat));
 
