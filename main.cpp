@@ -63,8 +63,8 @@ int main(int argc, char* argv[]) {
         r = L * L / (G * M * u);
 
         /* Compute time coordinate */
-        double d_tao = r * r * dtheta / L;
-        double dt = E * d_tao / (1.0 - 2 * G * M / r);
+        double d_tau = r * r * dtheta / L;
+        double dt = E * d_tau / (1.0 - 2 * G * M / r);
 
         t = t + dt;
 
