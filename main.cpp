@@ -17,13 +17,14 @@ double f2(double t, double y);
 int main(int argc, char* argv[]) {
 
     int N;
-    double G, M, L, uh0, u0, theta0, dtheta;
+    double G, M, L, E, uh0, u0, theta0, dtheta;
 
     /* Parameters */
     N = 5*8000;     //Number of steps
     G = 1.0;        //Gravitational constant
     M = 0.2;        //Mass of gravitating object
     L = 1.0;        //Angular momentum of orbiting object
+    E = 1.0;        //Energy of orbiting object
 
     u0 = 0.5;       //Initial inverse radius test particle
     uh0 = 0.0;      //Initial derivative inverse radius wrt theta
@@ -37,6 +38,7 @@ int main(int argc, char* argv[]) {
     double r = L*L / (G * M * u);
     double x = r * cos(theta);
     double y = r * sin(theta);
+    double t = 0;
 
     /* Open file for writing data */
     std::ofstream myfile;
@@ -58,7 +60,13 @@ int main(int argc, char* argv[]) {
         uh = uh_o + 0.5*h*(f1(theta, u_o, G, M, L) + f1(theta, u_hat, G, M, L));
 
         /* Compute radial coordinate */
-        r = L*L / (G * M * u);
+        r = L * L / (G * M * u);
+
+        /* Compute time coordinate */
+        double d_tao = r * r * dtheta / L;
+        double dt = E * d_tao / (1.0 - 2 * G * M / r);
+
+        t = t + dt;
 
         /* Compute Cartesian coordinates */
         x = r * cos(theta);
@@ -67,7 +75,7 @@ int main(int argc, char* argv[]) {
         /* Export location data to file */
         myfile << x << " "
                << y << " "
-               << "\n";
+               << t << "\n";
 
         /* Update angle */
         theta = theta + dtheta;
